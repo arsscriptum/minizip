@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<ImportGroup Label="PropertySheets">
+</ImportGroup>
+
+
+<!--  ==========================================================================================  -->
+<!--  |              SUPER IMPORTANT       CURRENT PROJECT IS ***MINIZIP****                   |  -->
+<!--  ==========================================================================================  -->
+<!--  |      ALL  RELATIVE PATHS ARE IN RELATION TO THE MINIZIP.VCXPROJ PROJECT FILE           |  -->
+<!--  |      $(ProjectDir)..\externals\$(minizip_image_name)                                   |  -->
+<!--  ==========================================================================================  -->
+
+
+  <PropertyGroup Label="UserMacros">
+    <minizip_image_name>minizip</minizip_image_name>
+    <minizip_version>1.0</minizip_version>
+    <minizip_root_path>$(ProjectDir)</minizip_root_path>
+    <ExternalsDirectory>$(minizip_root_path)externals\</ExternalsDirectory>
+     <ZlibDirectory>$(ExternalsDirectory)zlib\</ZlibDirectory>
+     <ZlibSrcDirectory>$(ZlibDirectory)src\</ZlibSrcDirectory>
+     <ZlibBinaryDirectory>$(ZlibDirectory)bin\$(Platform)\</ZlibBinaryDirectory>    
+  </PropertyGroup>
+  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='DebugDll'">    
+    <ZLIB_LIBRARY>zlib_DebugDll.lib</ZLIB_LIBRARY> 
+  </PropertyGroup> 
+  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='ReleaseDll'">  
+    <ZLIB_LIBRARY>zlib_ReleaseDll.lib</ZLIB_LIBRARY> 
+  </PropertyGroup>   
+  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='Debug'">    
+    <ZLIB_LIBRARY>zlib_Debug.lib</ZLIB_LIBRARY> 
+  </PropertyGroup> 
+  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='Release'">  
+    <ZLIB_LIBRARY>zlib_Release.lib</ZLIB_LIBRARY> 
+  </PropertyGroup>    
+  <!-- General CodeMeter Environment added in UserMacros -->
+  <PropertyGroup Label="LibMacros">
+    <minizip_headers_path>$(minizip_root_path)\src\</minizip_headers_path>
+    <minizip_sources_path>$(minizip_root_path)\src\</minizip_sources_path>
+    <minizip_binaries_path>$(minizip_root_path)\bin\$(Platform)</minizip_binaries_path>
+  </PropertyGroup> 
+  <PropertyGroup Condition="'$(Platform)'=='Win32'" Label="SpecialConfiguration">
+     <AbrevPlatform>32</AbrevPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='x64'" Label="SpecialConfiguration">
+     <AbrevPlatform>64</AbrevPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="SpecialConfiguration">
+     <AbrevConfig>d</AbrevConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="SpecialConfiguration">
+     <AbrevConfig>r</AbrevConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Final'" Label="SpecialConfiguration">
+     <AbrevConfig></AbrevConfig>
+  </PropertyGroup>
+  <PropertyGroup Label="ConfigurationPlaceHolder" Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
+    <ConfigurationPlaceHolder>$(Configuration)</ConfigurationPlaceHolder>
+  </PropertyGroup>
+  <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Final'">
+    <ConfigurationPlaceHolder>Release</ConfigurationPlaceHolder>
+  </PropertyGroup>
+
+ 
+<!--===========================================================================
+//
+//   minizip configuration: Library name
+//
+//===========================================================================-->
+  <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Debug'">
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <minizip_imagename_debug_static>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_debug_static>
+    <minizip_imagename_debug_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_debug_dynamic_lib>
+    <minizip_imagename_debug_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_debug_dynamic_dll>
+  </PropertyGroup>
+  <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Release'">
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <minizip_imagename_release_static>$(minizip_binaries_path)\$(minizip_image_name)_Release.lib</minizip_imagename_release_static>
+    <minizip_imagename_release_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.lib</minizip_imagename_release_dynamic_lib>
+    <minizip_imagename_release_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_release_dynamic_dll>
+  </PropertyGroup>
+  <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Final'">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <minizip_imagename_final_static>$(minizip_binaries_path)\$(minizip_image_name)_Release.lib</minizip_imagename_final_static>
+    <minizip_imagename_final_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.lib</minizip_imagename_final_dynamic_lib>
+    <minizip_imagename_final_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_final_dynamic_dll>
+  </PropertyGroup>
+  <PropertyGroup Label="LibName">
+    <minizip_imagename_static>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_static>
+    <minizip_imagename_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_dynamic_lib>
+    <minizip_imagename_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_dynamic_dll>
+  </PropertyGroup>
+
+<!--===========================================================================
+//
+//   minizip configuration: Common for all
+//   MINIZIP;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINDOWS;USE_MINIZIP_LOG_IMPL
+//===========================================================================-->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ZlibSrcDirectory);$(minizip_sources_path);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_MINIZIP_LOG_IMPL;MINIZIP;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+
+<!--===========================================================================
+//
+//   minizip configuration: Common Static: Debug/Release/Final static
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release' Or '$(Configuration)'=='Final'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(minizip_headers_path);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MINIZIP_STATIC;MINIZIP_ENABLE_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Common DLL: DebugDll/ReleaseDll
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='DebugDll' Or '$(Configuration)'=='ReleaseDll'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(minizip_headers_path);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_MINIZIP_DLL;MINIZIP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+<!--===========================================================================
+//
+//   minizip configuration: Debug static
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>STATIC_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(minizip_imagename_debug_static);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Release static
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+      <ClCompile>
+        <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+        <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>STATIC_LIB;NDEBUG;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(minizip_imagename_release_static);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Final static
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Final'">
+      <ClCompile>
+        <DebugInformationFormat>None</DebugInformationFormat>
+        <Optimization>MinSpace</Optimization>
+      <PreprocessorDefinitions>STATIC_LIB;NDEBUG;FINAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(minizip_imagename_final_static);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Debug Dll
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='DebugDll'">
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>NOMAIN;_DEBUG;_DEBUGDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ZLIB_LIBRARY);$(minizip_imagename_debug_dynamic_lib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Release Dll
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='ReleaseDll'">
+      <ClCompile>
+        <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+        <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>NOMAIN;STATIC_LIB;NDEBUG;_RELEASEDLL;RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDll</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ZLIB_LIBRARY);$(minizip_imagename_release_dynamic_lib);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Platform 32bits - x86/Win32
+//
+//===========================================================================-->
+ <ItemDefinitionGroup Condition="'$(Platform)'=='Win32' Or '$(Platform)'=='x86'">
+      <ClCompile>
+      <PreprocessorDefinitions>WIN_X86;_X86;_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+<!--===========================================================================
+//
+//   minizip configuration: Platform 64bits - x86/Win64
+//
+//===========================================================================-->
+  <ItemDefinitionGroup Condition="'$(Platform)'=='Win64' Or '$(Platform)'=='x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN_X64;_WIN64;_X64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <Target Name="PrintCoreLibProjectConfiguration" BeforeTargets="InitializeBuildStatus">
+    <Message Text="================================================================================================" />
+    <Message Text="    ***   PROJECT COMPILATION SETTINGS FOR MINIZIP   ***   " />
+    <Message Text="Configuration: $(Configuration). Platform: $(Platform). OutputType: $(OutputType)" />
+    <Message Text="MSBuildProjectName: $(MSBuildProjectName), ProjectName: $(ProjectName), MSBuildProjectName: $(MSBuildProjectName)" />
+    <Message Text="PreprocessorDefinitions: $(PreprocessorDefinitions)" />
+    <Message Text="PlatformTarget: $(PlatformTarget), PlatformName: $(PlatformName), TargetMachine $(TargetMachine)" />
+    <Message Text="RuntimeLibrary: $(RuntimeLibrary)" />
+    <Message Text="================================================================================================" />
+  </Target>
+</Project>
