@@ -15,11 +15,18 @@
   <PropertyGroup Label="UserMacros">
     <minizip_image_name>minizip</minizip_image_name>
     <minizip_version>1.0</minizip_version>
-    <minizip_root_path>$(ProjectDir)</minizip_root_path>
+
+    <minizip_root_path>$(ProjectDir)..\</minizip_root_path>
+    <minizip_bin_path>$(ProjectDir)..\bin\$(Platform)\</minizip_bin_path>
+    <minizip_obj_path>$(ProjectDir)obj\</minizip_obj_path>
+
+
     <ExternalsDirectory>$(minizip_root_path)externals\</ExternalsDirectory>
-     <ZlibDirectory>$(ExternalsDirectory)zlib\</ZlibDirectory>
-     <ZlibSrcDirectory>$(ZlibDirectory)src\</ZlibSrcDirectory>
-     <ZlibBinaryDirectory>$(ZlibDirectory)bin\$(Platform)\</ZlibBinaryDirectory>    
+    <ZlibDirectory>$(ExternalsDirectory)zlib\</ZlibDirectory>
+    <ZlibSrcDirectory>$(ZlibDirectory)src\</ZlibSrcDirectory>
+    <SourcesDirectory>$(minizip_root_path)src\</SourcesDirectory>
+    <DocsDirectory>$(minizip_root_path)doc\</DocsDirectory>
+    <ZlibBinaryDirectory>$(minizip_root_path)bin\$(Platform)\</ZlibBinaryDirectory>    
   </PropertyGroup>
   <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='DebugDll'">    
     <ZLIB_LIBRARY>zlib_DebugDll.lib</ZLIB_LIBRARY> 
@@ -33,11 +40,12 @@
   <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='Release'">  
     <ZLIB_LIBRARY>zlib_Release.lib</ZLIB_LIBRARY> 
   </PropertyGroup>    
-  <!-- General CodeMeter Environment added in UserMacros -->
+
+
+  <!-- General netlib Configuration -->
   <PropertyGroup Label="LibMacros">
     <minizip_headers_path>$(minizip_root_path)\src\</minizip_headers_path>
     <minizip_sources_path>$(minizip_root_path)\src\</minizip_sources_path>
-    <minizip_binaries_path>$(minizip_root_path)\bin\$(Platform)</minizip_binaries_path>
   </PropertyGroup> 
   <PropertyGroup Condition="'$(Platform)'=='Win32'" Label="SpecialConfiguration">
      <AbrevPlatform>32</AbrevPlatform>
@@ -51,17 +59,35 @@
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="SpecialConfiguration">
      <AbrevConfig>r</AbrevConfig>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Final'" Label="SpecialConfiguration">
-     <AbrevConfig></AbrevConfig>
+  <PropertyGroup Condition="'$(Configuration)'=='DebugDll'" Label="SpecialConfiguration">
+     <AbrevConfig>d_dll</AbrevConfig>
   </PropertyGroup>
-  <PropertyGroup Label="ConfigurationPlaceHolder" Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release'">
-    <ConfigurationPlaceHolder>$(Configuration)</ConfigurationPlaceHolder>
+  <PropertyGroup Condition="'$(Configuration)'=='ReleaseDll'" Label="SpecialConfiguration">
+     <AbrevConfig>r_dll</AbrevConfig>
   </PropertyGroup>
-  <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Final'">
-    <ConfigurationPlaceHolder>Release</ConfigurationPlaceHolder>
+  <PropertyGroup Label="ConfigurationPlaceHolder">
+    <!-- <ConfigurationPlaceHolder>_$(AbrevConfig)$(AbrevPlatform)</ConfigurationPlaceHolder> -->
+    <ConfigurationPlaceHolder>$(AbrevPlatform)$(AbrevConfig)</ConfigurationPlaceHolder>
   </PropertyGroup>
 
- 
+
+
+  <Choose>
+    <When Condition="'$(SetMinimalCompilation)'==''">
+      <PropertyGroup Label="MinimalCompilation">
+        <MinimalCompilationSetting>$(SetMinimalCompilation)</MinimalCompilationSetting>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup Label="MinimalCompilation">
+        <MinimalCompilationSetting>$(SetMinimalCompilation)</MinimalCompilationSetting>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+
+
+
 <!--===========================================================================
 //
 //   minizip configuration: Library name
@@ -69,26 +95,26 @@
 //===========================================================================-->
   <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Debug'">
     <WholeProgramOptimization>false</WholeProgramOptimization>
-    <minizip_imagename_debug_static>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_debug_static>
-    <minizip_imagename_debug_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_debug_dynamic_lib>
-    <minizip_imagename_debug_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_debug_dynamic_dll>
+    <minizip_imagename_debug_static>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_debug_static>
+    <minizip_imagename_debug_dynamic_lib>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_debug_dynamic_lib>
+    <minizip_imagename_debug_dynamic_dll>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_debug_dynamic_dll>
   </PropertyGroup>
   <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Release'">
     <WholeProgramOptimization>false</WholeProgramOptimization>
-    <minizip_imagename_release_static>$(minizip_binaries_path)\$(minizip_image_name)_Release.lib</minizip_imagename_release_static>
-    <minizip_imagename_release_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.lib</minizip_imagename_release_dynamic_lib>
-    <minizip_imagename_release_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_release_dynamic_dll>
+    <minizip_imagename_release_static>$(minizip_bin_path)$(minizip_image_name)_Release.lib</minizip_imagename_release_static>
+    <minizip_imagename_release_dynamic_lib>$(minizip_bin_path)$(minizip_image_name)_ReleaseDll.lib</minizip_imagename_release_dynamic_lib>
+    <minizip_imagename_release_dynamic_dll>$(minizip_bin_path)$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_release_dynamic_dll>
   </PropertyGroup>
   <PropertyGroup Label="LibName" Condition="'$(Configuration)'=='Final'">
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <minizip_imagename_final_static>$(minizip_binaries_path)\$(minizip_image_name)_Release.lib</minizip_imagename_final_static>
-    <minizip_imagename_final_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.lib</minizip_imagename_final_dynamic_lib>
-    <minizip_imagename_final_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_final_dynamic_dll>
+    <minizip_imagename_final_static>$(minizip_bin_path)$(minizip_image_name)_Release.lib</minizip_imagename_final_static>
+    <minizip_imagename_final_dynamic_lib>$(minizip_bin_path)$(minizip_image_name)_ReleaseDll.lib</minizip_imagename_final_dynamic_lib>
+    <minizip_imagename_final_dynamic_dll>$(minizip_bin_path)$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_final_dynamic_dll>
   </PropertyGroup>
   <PropertyGroup Label="LibName">
-    <minizip_imagename_static>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_static>
-    <minizip_imagename_dynamic_lib>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_dynamic_lib>
-    <minizip_imagename_dynamic_dll>$(minizip_binaries_path)\$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_dynamic_dll>
+    <minizip_imagename_static>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_static>
+    <minizip_imagename_dynamic_lib>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_dynamic_lib>
+    <minizip_imagename_dynamic_dll>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_dynamic_dll>
   </PropertyGroup>
 
 <!--===========================================================================
@@ -98,6 +124,7 @@
 //===========================================================================-->
   <ItemDefinitionGroup>
     <ClCompile>
+        <MinimalRebuild>$(MinimalCompilationSetting)</MinimalRebuild>
       <AdditionalIncludeDirectories>$(ZlibSrcDirectory);$(minizip_sources_path);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_MINIZIP_LOG_IMPL;MINIZIP;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -141,7 +168,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(minizip_imagename_debug_static);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -159,7 +186,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(minizip_imagename_release_static);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -177,7 +204,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(minizip_imagename_final_static);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -195,7 +222,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(ZLIB_LIBRARY);$(minizip_imagename_debug_dynamic_lib);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -213,7 +240,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_binaries_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(ZLIB_LIBRARY);$(minizip_imagename_release_dynamic_lib);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

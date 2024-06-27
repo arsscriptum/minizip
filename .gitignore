@@ -1,12 +1,11 @@
 # Output directories
 bin/**
 tmp/**
+vs/obj/**
 obj/**
 x64/**
 test/bin/**
 test/tmp/**
-test/vs/___temp_compilation_files
-test/vs/___temp_compilation_files/**
 examples/bin/**
 examples/tmp/**
 *.dll
@@ -29,9 +28,8 @@ examples/tmp/**
 *.out
 *.app
 
-
-.vs
-.vs/**
+tmp*.bat
+__*.bat
 
 # meta proj file generated with MSBUILDEMITSOLUTION=1
 *.vcxproj.metaproj

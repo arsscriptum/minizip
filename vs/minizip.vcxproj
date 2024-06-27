@@ -8,9 +8,9 @@ Copyright (c) 2020 cybercastor, All rights reserved
 ***********************************************************************************************
 -->
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(ProjectDir)props\toolset.props" Condition="'$(toolset_config_version)' == ''" />
-  <Import Project="$(ProjectDir)props\minizip_internal.props" Condition="'$(minizip_version)' == ''" />
-  <Import Project="$(ProjectDir)props\dejainsight.props" Condition="'$(dejainsight_minizip_integration)' == ''" />
+  <Import Project="$(ProjectDir)cfg\toolset.props" Condition="'$(toolset_config_version)' == ''" />
+  <Import Project="$(ProjectDir)cfg\minizip_internal.props" Condition="'$(minizip_version)' == ''" />
+  <Import Project="$(ProjectDir)cfg\dejainsight.props" Condition="'$(dejainsight_integration)' == ''" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDll|Win32">
       <Configuration>DebugDll</Configuration>
@@ -65,37 +65,43 @@ Copyright (c) 2020 cybercastor, All rights reserved
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+
+  <PropertyGroup>
+    <TrackFileAccess>false</TrackFileAccess>
+  </PropertyGroup>
+
+
   <ItemGroup>
-    <ClInclude Include="src\crypt.h" />
-    <ClInclude Include="src\ioapi.h" />
-    <ClInclude Include="src\ioapi_buf.h" />
-    <ClInclude Include="src\ioapi_mem.h" />
-    <ClInclude Include="src\iowin32.h" />
-    <ClInclude Include="src\minishared.h" />
-    <ClInclude Include="src\tmzip.h" />
-    <ClInclude Include="src\unzip.h" />
-    <ClInclude Include="src\zip.h" />
+    <ClInclude Include="$(SourcesDirectory)crypt.h" />
+    <ClInclude Include="$(SourcesDirectory)ioapi.h" />
+    <ClInclude Include="$(SourcesDirectory)ioapi_buf.h" />
+    <ClInclude Include="$(SourcesDirectory)ioapi_mem.h" />
+    <ClInclude Include="$(SourcesDirectory)iowin32.h" />
+    <ClInclude Include="$(SourcesDirectory)minishared.h" />
+    <ClInclude Include="$(SourcesDirectory)tmzip.h" />
+    <ClInclude Include="$(SourcesDirectory)unzip.h" />
+    <ClInclude Include="$(SourcesDirectory)zip.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\crypt.c" />
-    <ClCompile Include="src\ioapi.c" />
-    <ClCompile Include="src\ioapi_buf.c" />
-    <ClCompile Include="src\ioapi_mem.c" />
-    <ClCompile Include="src\iowin32.c" />
-    <ClCompile Include="src\minishared.c" />
-    <ClCompile Include="src\miniunz.c" />
-    <ClCompile Include="src\minizip.c" />
-    <ClCompile Include="src\tmzip.c" />
-    <ClCompile Include="src\unzip.c" />
-    <ClCompile Include="src\zip.c" />
+    <ClCompile Include="$(SourcesDirectory)crypt.c" />
+    <ClCompile Include="$(SourcesDirectory)ioapi.c" />
+    <ClCompile Include="$(SourcesDirectory)ioapi_buf.c" />
+    <ClCompile Include="$(SourcesDirectory)ioapi_mem.c" />
+    <ClCompile Include="$(SourcesDirectory)iowin32.c" />
+    <ClCompile Include="$(SourcesDirectory)minishared.c" />
+    <ClCompile Include="$(SourcesDirectory)miniunz.c" />
+    <ClCompile Include="$(SourcesDirectory)minizip.c" />
+    <ClCompile Include="$(SourcesDirectory)tmzip.c" />
+    <ClCompile Include="$(SourcesDirectory)unzip.c" />
+    <ClCompile Include="$(SourcesDirectory)zip.c" />
   </ItemGroup>
   <PropertyGroup>
     <TrackFileAccess>false</TrackFileAccess>
   </PropertyGroup>
   <PropertyGroup>
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>bin\$(Platform)\</OutDir>
-    <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(minizip_bin_path)</OutDir>
+    <IntDir>$(minizip_obj_path)\$(Platform)\$(Configuration)\</IntDir>       
   </PropertyGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9105721d-4318-4c36-9dc9-a28f28ef51e6}</ProjectGuid>
