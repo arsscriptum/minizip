@@ -198,20 +198,26 @@ goto :init
 :: ==============================================================================
 :build_x86
     set bcfg=%1
+
     if /i "%bcfg%" == "" (
+        call :printverbose "start build_x86 %bcfg%"
         call :printverbose "build_x86 all configs"
         call :call_make_build Debug x86
         call :call_make_build Release x86
     )else (
+        call :printverbose "start build_x86 %bcfg%"
         if /i "%bcfg%" == "Debug" (
+            call :printverbose "start build_x86 %bcfg%"
             call :printverbose "build_x86 debug only"
             call :call_make_build Debug x86
         )
         if /i "%bcfg%" == "Release" (
+            call :printverbose "start build_x86 %bcfg%"
             call :printverbose "build_x64 Release only"
             call :call_make_build Release x86
         )
         if /i "%bcfg%" == "DebugDll" (
+            call :printverbose "start build_x86 %bcfg%"
             call :printverbose "build_x86 debug only"
             call :call_make_build DebugDll x86
         )
@@ -299,7 +305,7 @@ goto :init
 ::   Build
 :: ==============================================================================
 :build
-    call :printverbose "start build"
+    call :printverbose "start build %__target% %__buildcfg%"
 
     if "%__target%" == "" (
         call :error_missing_target  & goto :eof

@@ -24,9 +24,9 @@
     <ExternalsDirectory>$(minizip_root_path)externals\</ExternalsDirectory>
     <ZlibDirectory>$(ExternalsDirectory)zlib\</ZlibDirectory>
     <ZlibSrcDirectory>$(ZlibDirectory)src\</ZlibSrcDirectory>
+    <ZlibBinDirectory>$(ZlibDirectory)bin\$(Platform)\</ZlibBinDirectory>
     <SourcesDirectory>$(minizip_root_path)src\</SourcesDirectory>
     <DocsDirectory>$(minizip_root_path)doc\</DocsDirectory>
-    <ZlibBinaryDirectory>$(minizip_root_path)bin\$(Platform)\</ZlibBinaryDirectory>    
   </PropertyGroup>
   <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='DebugDll'">    
     <ZLIB_LIBRARY>zlib_DebugDll.lib</ZLIB_LIBRARY> 
@@ -168,7 +168,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(minizip_imagename_debug_static);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -186,7 +186,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(minizip_imagename_release_static);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -222,7 +222,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(ZLIB_LIBRARY);$(minizip_imagename_debug_dynamic_lib);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -240,7 +240,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ZlibBinaryDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ZlibBinDirectory);$(minizip_bin_path);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(ZLIB_LIBRARY);$(minizip_imagename_release_dynamic_lib);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
