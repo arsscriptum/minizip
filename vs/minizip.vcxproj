@@ -162,7 +162,7 @@ Copyright (c) 2020 cybercastor, All rights reserved
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <TargetName>$(ProjectName)_$(Configuration)</TargetName>
+    <TargetName>$(minizip_image_basename)</TargetName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <PropertyGroup>
@@ -181,4 +181,33 @@ Copyright (c) 2020 cybercastor, All rights reserved
       <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
   </ItemDefinitionGroup>
+
+  <Target Name="CheckZlibPath" BeforeTargets="InitializeBuildStatus">
+    <Error Text="The environment variable ZLIB_PATH is not set or is empty."
+           Condition=" '$(ZLIB_PATH)' == '' "/>
+  </Target>
+ <Target Name="CustomClean" BeforeTargets="Clean">
+    <Message Text="==============================================================================" Importance="high" />
+    <Message Text="CUSTOM CLEAN - DELETING $(OutDir)*" Importance="high" />
+    <Message Text="==============================================================================" Importance="high" />
+    <ItemGroup>
+      <_CustomFilesToDelete Include="$(OutDir)*" />
+    </ItemGroup>
+    <Delete Files="@(_CustomFilesToDelete)" />
+  </Target>
+  <Target Name="PrintBuildConfig" BeforeTargets="InitializeBuildStatus">
+    <Message Text="==========================================================" Importance="high" />
+    <Message Text="                PrintBuildConfig                                     " Importance="high" />
+    <Message Text="CharacterSet.....................: $(CharacterSet)" Importance="high" />
+    <Message Text="UseDebugLibraries................: $(UseDebugLibraries)" Importance="high" />
+    <Message Text="SubSystem........................: $(SubSystem)" Importance="high" />
+    <Message Text="IntDir...........................: $(IntDir)" Importance="high" />  
+    <Message Text="OutDir...........................: $(OutDir)" Importance="high" />
+    <Message Text="DebugInformationFormat...........: $(DebugInformationFormat)" Importance="high" />
+    <Message Text="MinimalRebuild...................: $(MinimalCompilationSetting)" Importance="high" />
+    <Message Text="ZLIB_PATH........................: $(ZLIB_PATH)" Importance="high" />
+    <Message Text="==========================================================" Importance="high" />
+  </Target>
+
+
 </Project>

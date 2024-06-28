@@ -191,6 +191,14 @@ goto :init
     call :call_make_build ReleaseDll x64
     goto :eof
 
+:: ==============================================================================
+::   Build all
+:: ==============================================================================
+:build_all
+    call :build_dll
+    call :build_static
+    goto :eof
+
 
 
 :: ==============================================================================
@@ -308,7 +316,7 @@ goto :init
     call :printverbose "start build %__target% %__buildcfg%"
 
     if "%__target%" == "" (
-        call :error_missing_target  & goto :eof
+        call :build_all
         )else (
         if "%__target%" == "clean" (
             call :clean

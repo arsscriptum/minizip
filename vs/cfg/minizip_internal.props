@@ -15,31 +15,18 @@
   <PropertyGroup Label="UserMacros">
     <minizip_image_name>minizip</minizip_image_name>
     <minizip_version>1.0</minizip_version>
-
     <minizip_root_path>$(ProjectDir)..\</minizip_root_path>
     <minizip_bin_path>$(ProjectDir)..\bin\$(Platform)\</minizip_bin_path>
     <minizip_obj_path>$(ProjectDir)obj\</minizip_obj_path>
-
-
     <ExternalsDirectory>$(minizip_root_path)externals\</ExternalsDirectory>
-    <ZlibDirectory>$(ExternalsDirectory)zlib\</ZlibDirectory>
+    <ZlibDirectory>$(ZLIB_PATH)\</ZlibDirectory>
     <ZlibSrcDirectory>$(ZlibDirectory)src\</ZlibSrcDirectory>
     <ZlibBinDirectory>$(ZlibDirectory)bin\$(Platform)\</ZlibBinDirectory>
     <SourcesDirectory>$(minizip_root_path)src\</SourcesDirectory>
     <DocsDirectory>$(minizip_root_path)doc\</DocsDirectory>
   </PropertyGroup>
-  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='DebugDll'">    
-    <ZLIB_LIBRARY>zlib_DebugDll.lib</ZLIB_LIBRARY> 
-  </PropertyGroup> 
-  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='ReleaseDll'">  
-    <ZLIB_LIBRARY>zlib_ReleaseDll.lib</ZLIB_LIBRARY> 
-  </PropertyGroup>   
-  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='Debug'">    
-    <ZLIB_LIBRARY>zlib_Debug.lib</ZLIB_LIBRARY> 
-  </PropertyGroup> 
-  <PropertyGroup Label="ZLIB" Condition="'$(Configuration)'=='Release'">  
-    <ZLIB_LIBRARY>zlib_Release.lib</ZLIB_LIBRARY> 
-  </PropertyGroup>    
+
+
 
 
   <!-- General netlib Configuration -->
@@ -57,20 +44,22 @@
      <AbrevConfig>d</AbrevConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="SpecialConfiguration">
-     <AbrevConfig>r</AbrevConfig>
+     <AbrevConfig></AbrevConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='DebugDll'" Label="SpecialConfiguration">
      <AbrevConfig>d_dll</AbrevConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='ReleaseDll'" Label="SpecialConfiguration">
-     <AbrevConfig>r_dll</AbrevConfig>
+     <AbrevConfig>_dll</AbrevConfig>
   </PropertyGroup>
   <PropertyGroup Label="ConfigurationPlaceHolder">
     <!-- <ConfigurationPlaceHolder>_$(AbrevConfig)$(AbrevPlatform)</ConfigurationPlaceHolder> -->
-    <ConfigurationPlaceHolder>$(AbrevPlatform)$(AbrevConfig)</ConfigurationPlaceHolder>
+    <ConfigurationPlaceHolder>$(AbrevConfig)</ConfigurationPlaceHolder>
   </PropertyGroup>
 
-
+  <PropertyGroup Label="ZLIB">    
+    <ZLIB_LIBRARY>zlib$(ConfigurationPlaceHolder).lib</ZLIB_LIBRARY> 
+  </PropertyGroup> 
 
   <Choose>
     <When Condition="'$(SetMinimalCompilation)'==''">
@@ -112,6 +101,7 @@
     <minizip_imagename_final_dynamic_dll>$(minizip_bin_path)$(minizip_image_name)_ReleaseDll.dll</minizip_imagename_final_dynamic_dll>
   </PropertyGroup>
   <PropertyGroup Label="LibName">
+    <minizip_image_basename>$(minizip_image_name)$(ConfigurationPlaceHolder)</minizip_image_basename>
     <minizip_imagename_static>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder).lib</minizip_imagename_static>
     <minizip_imagename_dynamic_lib>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.lib</minizip_imagename_dynamic_lib>
     <minizip_imagename_dynamic_dll>$(minizip_bin_path)$(minizip_image_name)_$(ConfigurationPlaceHolder)Dll.dll</minizip_imagename_dynamic_dll>
@@ -270,6 +260,8 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
+
+
 
   <Target Name="PrintCoreLibProjectConfiguration" BeforeTargets="InitializeBuildStatus">
     <Message Text="================================================================================================" />
