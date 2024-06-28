@@ -1,6 +1,0 @@
-[submodule "scripts"]
-	path = scripts
-	url = git@github.com-codecastor:codecastor/automation.build.bat
-[submodule "externals/zlib"]
-	path = externals/zlib
-	url = https://github.com/arsscriptum/zlib.git
